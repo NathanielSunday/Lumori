@@ -1,6 +1,0 @@
-E:\Documents\GitRepos\Imminence\Imminence\x64\Debug\Imminence.exe
-E:\Documents\GitRepos\Imminence\Imminence\x64\Debug\Imminence.vcxproj.CopyComplete
-E:\Documents\GitRepos\Imminence\Imminence\x64\Debug\glfw3.dll
-E:\Documents\GitRepos\Imminence\x64\Debug\Imminence.vcxproj.CopyComplete
-E:\Documents\GitRepos\Imminence\x64\Debug\Imminence.exe
-E:\Documents\GitRepos\Imminence\x64\Debug\glfw3.dll
