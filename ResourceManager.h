@@ -15,9 +15,9 @@
 /*////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*\
 |															 |
 |			Do the shit properly:							 |
-|						keep resources managed internally	 |
-|						make calls to this resource return	 |
-|								objects/sprites/music		 |
+|						keep resources managed internally,	 |
+|						make calls to this class return		 |
+|						objects/sprites/music				 |
 |															 |
 \*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\/////////////////////////////*/
 
