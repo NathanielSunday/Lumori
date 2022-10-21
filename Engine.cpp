@@ -17,6 +17,7 @@ float Engine::deltaTime() {
 }
 
 void Engine::initEngine() {
+	Level::init();
 	state_ = State::INTRO;
 }
 

@@ -1,10 +1,13 @@
 #pragma once
 
+#include "ResourceManager.h"
+#include "Level.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <stdexcept>
 #include <memory>
-#include "ResourceManager.h"
+
+
 
 enum State {
 	//Opening credits????
