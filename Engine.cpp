@@ -29,7 +29,7 @@ void Engine::initWindow() {
 void Engine::mainLoop() {
 	sf::Event event;
 	sf::Sprite sprite;
-	sprite.setTexture(*ResourceManager::get_texture("Tilemaps/tilesheet.png"));
+	sprite.setTexture(*ResourceManager::get_texture("Sprite Maps/tilesheet.png"));
 	while (window_.isOpen()) {
 		deltaTime_.restart();
 		while (window_.pollEvent(event)) {
