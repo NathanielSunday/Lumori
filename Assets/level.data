@@ -1,9 +1,9 @@
-#Overworld
-0:3,3
+#Overworld, level 0
+!3,3
 0,-1,-1
 -1,-1,-1
 -1,-1,-1
-#Test room
-1:2,1
+#Test Room, level 1
+!1,1
 2
 1

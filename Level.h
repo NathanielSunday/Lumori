@@ -13,6 +13,6 @@ public:
 	static void init();
 private:
 	//character representation of rooms 
-	static std::vector<int**> loaded_;
+	static std::vector<int**> _levels;
 };
 

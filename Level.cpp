@@ -1,23 +1,38 @@
 #include "Level.h"
 
+std::vector<int**> Level::_levels;
 
 void Level::init() {
-	loaded_ = 
-
 	//input for level data file, may move this to Resource manager at some point
-	std::ifstream input;
-	input.open(ASSET_PATH "level.data");
-	try {
-		while (true) {
-			int i = input.get();
-			if (i == (int)'#')
-				continue;
+	std::ifstream filein(ASSET_PATH "level.data");
+	int level = -1, a, b, x, y;
+	for (std::string line; std::getline(filein, line); /*no global increment*/) {
+		if (line.at(0) == '#') continue;
+		if (line.at(0) == '!') {
+			++level;
+			std::cout << "Level: " << level << std::endl;
+			b = 0;
 
-			
+			line.erase(0, 1);
+			x = std::stoi(line.substr(0, line.find(',')));
+			line.erase(0, line.find(',') + 1);
+			y = std::stoi(line.substr(0, line.find(',')));
 
+			int** push = new int*[x];
+			for (int i = 0; i < y; ++i)
+				push[i] = new int[y];
+
+			_levels.push_back(push);
+			continue;
 		}
+
+		for (a = 0; a < x; ++a) {
+			_levels[level][a][b] = std::stoi(line.substr(0, line.find(',')));
+			std::cout << _levels[level][a][b] << ", ";
+			line.erase(0, line.find(',') + 1);
+		}
+		std::cout << std::endl;
+		++b;
 	}
-	catch (std::exception e) {
-		std::cout << "Levels loaded.";
-	}
+	std::cout << "\nThe levels are loaded" << std::endl;
 }
