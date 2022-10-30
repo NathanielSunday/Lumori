@@ -8,6 +8,7 @@
 #include <SFML/Audio/Music.hpp>
 
 #define ASSET_PATH	"Assets/"
+#define TILE_SIZE	16
 
 
 

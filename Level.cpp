@@ -1,6 +1,10 @@
 #include "Level.h"
 
+sf::Texture** Level::textures;
+
 std::vector<int**> Level::_levels;
+
+
 
 void Level::init() {
 	//input for level data file, may move this to Resource manager at some point
@@ -18,9 +22,9 @@ void Level::init() {
 			line.erase(0, line.find(',') + 1);
 			y = std::stoi(line.substr(0, line.find(',')));
 
-			int** push = new int*[x];
-			for (int i = 0; i < y; ++i)
-				push[i] = new int[y];
+			int** push = new int*[y];
+			for (int i = 0; i < x; ++i)
+				push[i] = new int[x];
 
 			_levels.push_back(push);
 			continue;
@@ -34,5 +38,13 @@ void Level::init() {
 		std::cout << std::endl;
 		++b;
 	}
-	std::cout << "\nThe levels are loaded" << std::endl;
+	std::cout << "\nThe levels are loaded, " << _levels[0][1][2] << std::endl;
+}
+  
+void Level::load(int level) {
+	for (int b = 0; b < *(&_levels[level] + 1) - _levels[level]; ++b) {
+		for (int a = 0; a < *(&_levels[level] + 1) - _levels[level]; ++a) {
+			//load shit here
+		}
+	}
 }
