@@ -39,13 +39,18 @@ void Level::init() {
 }
   
 void Level::load(int level) {
+	//get the length of the array(s)
 	int y = *(&_levels[level] + 1) - _levels[level];
 	int x = *(&_levels[level][0] + 1) - _levels[level][0];
+	//initialize our textures
 	_activeLevel = new sf::Texture*[y * NODE_SIZE];
 	for (int b = 0; b < y; ++b) {
 		_activeLevel[b] = new sf::Texture[x * NODE_SIZE];
 		for (int a = 0; a < x; ++a) {
-			
+
+			for (int n = 0; n < NODE_SIZE; ++n) {
+
+			}
 		}
 	}
 }
