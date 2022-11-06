@@ -39,11 +39,12 @@ void Level::init() {
 }
   
 void Level::load(int level) {
-	//init activeLevels [level][LENGTH] here
-	for (int b = 0; b < *(&_levels[level] + 1) - _levels[level]; ++b) {
-
-		for (int a = 0; a < *(&_levels[level][b] + 1) - _levels[level][b]; ++a) {
-			//init activeLevels [level][b][LENGTH] here
+	int y = *(&_levels[level] + 1) - _levels[level];
+	int x = *(&_levels[level][0] + 1) - _levels[level][0];
+	_activeLevel = new sf::Texture*[y * NODE_SIZE];
+	for (int b = 0; b < y; ++b) {
+		_activeLevel[b] = new sf::Texture[x * NODE_SIZE];
+		for (int a = 0; a < x; ++a) {
 			
 		}
 	}

@@ -19,5 +19,6 @@ private:
 	//character representation of rooms 
 	static std::vector<int**> _levels;
 	static sf::Texture** _activeLevel;
+	static sf::VertexArray va;
 };
 
