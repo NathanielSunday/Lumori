@@ -7,8 +7,12 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/Music.hpp>
 
-#define ASSET_PATH	"Assets/"
 #define TILE_SIZE	16
+#define NODE_SIZE	16
+#define ASSET_PATH	"Assets/"
+#define NODE_PATH	ASSET_PATH "level/"
+#define SPRITE_PATH	ASSET_PATH "sprite/entity/"
+#define TILE_PATH	ASSET_PATH "sprite/tile/"
 
 
 
@@ -25,7 +29,7 @@
 
 
 
-static class ResourceManager {
+static class Resource {
 public:
 	//get a texture from a specified path
 	static std::shared_ptr<sf::Texture> get_texture(const std::string& file);

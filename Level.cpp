@@ -1,10 +1,7 @@
 #include "Level.h"
 
-sf::Texture** Level::activeLevel;
-
+sf::Texture** Level::_activeLevel;
 std::vector<int**> Level::_levels;
-
-
 
 void Level::init() {
 	//input for level data file, may move this to Resource manager at some point
@@ -42,11 +39,11 @@ void Level::init() {
 }
   
 void Level::load(int level) {
-
+	//init activeLevels [level][LENGTH] here
 	for (int b = 0; b < *(&_levels[level] + 1) - _levels[level]; ++b) {
 
-		for (int a = 0; a < *(&_levels[level] + 1) - _levels[level]; ++a) {
-
+		for (int a = 0; a < *(&_levels[level][b] + 1) - _levels[level][b]; ++a) {
+			//init activeLevels [level][b][LENGTH] here
 			
 		}
 	}

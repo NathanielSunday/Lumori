@@ -30,7 +30,7 @@ void Engine::initWindow() {
 void Engine::mainLoop() {
 	sf::Event event;
 	sf::Sprite sprite;
-	sprite.setTexture(*ResourceManager::get_texture("Sprite Maps/tilesheet.png"));
+	sprite.setTexture(*Resource::get_texture(TILE_PATH "tilesheet.png"));
 	while (window_.isOpen()) {
 		deltaTime_.restart();
 		while (window_.pollEvent(event)) {
@@ -50,7 +50,7 @@ void Engine::mainLoop() {
 }
 
 void Engine::cleanup() {
-	ResourceManager::flush_all();
+	Resource::flush_all();
 }
 
 int main() {

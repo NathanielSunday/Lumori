@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ResourceManager.h"
+#include "Resource.h"
 #include "Level.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>

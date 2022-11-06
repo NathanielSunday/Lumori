@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ResourceManager.h"
+#include "Resource.h"
 #include <SFML\Graphics.hpp>
 #include <string>
 #include <fstream>
@@ -18,6 +18,6 @@ public:
 private:
 	//character representation of rooms 
 	static std::vector<int**> _levels;
-	static sf::Texture** activeLevel;
+	static sf::Texture** _activeLevel;
 };
 
