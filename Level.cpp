@@ -1,9 +1,10 @@
 #include "Level.h"
 
-sf::Texture** Level::_activeLevel;
 std::vector<int**> Level::_levels;
+sf::VertexArray Level::_activeLevel;
 
 void Level::init() {
+	Level::_activeLevel.setPrimitiveType(sf::Quads);
 	//input for level data file, may move this to Resource manager at some point
 	std::ifstream filein(ASSET_PATH "level.data");
 	int level = -1, a, b, x, y;
@@ -19,37 +20,43 @@ void Level::init() {
 			line.erase(0, line.find(',') + 1);
 			y = std::stoi(line.substr(0, line.find(',')));
 
-			int** push = new int*[y];
+			int** push = new int* [y];
 			for (int i = 0; i < x; ++i)
 				push[i] = new int[x];
 
-			_levels.push_back(push);
+			Level::_levels.push_back(push);
 			continue;
 		}
 
 		for (a = 0; a < x; ++a) {
-			_levels[level][a][b] = std::stoi(line.substr(0, line.find(',')));
-			std::cout << _levels[level][a][b] << ", ";
+			Level::_levels[level][a][b] = std::stoi(line.substr(0, line.find(',')));
+			std::cout << Level::_levels[level][a][b] << ", ";
 			line.erase(0, line.find(',') + 1);
 		}
 		std::cout << std::endl;
 		++b;
 	}
-	std::cout << "\nThe levels are loaded, " << _levels[0][1][2] << std::endl;
+	std::cout << "\nThe levels are loaded, " << Level::_levels[0][1][2] << std::endl;
 }
-  
+
 void Level::load(int level) {
 	//get the length of the array(s)
-	int y = *(&_levels[level] + 1) - _levels[level];
-	int x = *(&_levels[level][0] + 1) - _levels[level][0];
-	//initialize our textures
-	_activeLevel = new sf::Texture*[y * NODE_SIZE];
+	int y = *(&Level::_levels[level] + 1) - Level::_levels[level];
+	int x = *(&Level::_levels[level][0] + 1) - Level::_levels[level][0];
+	Level::_activeLevel.resize(x * y * NODE_SIZE * NODE_SIZE * 4);
 	for (int b = 0; b < y; ++b) {
-		_activeLevel[b] = new sf::Texture[x * NODE_SIZE];
 		for (int a = 0; a < x; ++a) {
-
-			for (int n = 0; n < NODE_SIZE; ++n) {
-
+			sf::Image image;
+			if (Level::_levels[level][a][b] != -1) {
+				image.loadFromFile(NODE_PATH "map" + std::to_string(Level::_levels[level][a][b]) + ".bmp");
+			}
+			else {
+				image.create(NODE_SIZE, NODE_SIZE, sf::Color::Black);
+			}
+			for (int j = 0; j < NODE_SIZE; ++j) {
+				for (int i = 0; i < NODE_SIZE; ++i) {
+					
+				}
 			}
 		}
 	}

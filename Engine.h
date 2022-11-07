@@ -38,13 +38,13 @@ public:
 	float deltaTime();
 private:
 	//the state the game is currently in
-	State state_;
+	State _state;
 	//the main window fo the game
-	sf::RenderWindow window_;
+	sf::RenderWindow _window;
 	//the main viewport of the game
-	sf::View viewport_;
+	sf::View _viewport;
 	//The clock used for calculating time between loops
-	sf::Clock deltaTime_;
+	sf::Clock _deltaTime;
 
 	//Pre-window variables set
 	void initEngine();

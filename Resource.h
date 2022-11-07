@@ -7,12 +7,12 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/Music.hpp>
 
-#define TILE_SIZE	16
-#define NODE_SIZE	16
-#define ASSET_PATH	"Assets/"
-#define NODE_PATH	ASSET_PATH "level/"
-#define SPRITE_PATH	ASSET_PATH "sprite/entity/"
-#define TILE_PATH	ASSET_PATH "sprite/tile/"
+#define TILE_SIZE		16
+#define NODE_SIZE		16
+#define ASSET_PATH		"Assets/"
+#define NODE_PATH		ASSET_PATH "level/"
+#define SPRITE_PATH		ASSET_PATH "sprite/entity/"
+#define TILE_PATH		ASSET_PATH "sprite/tile/"
 
 
 
@@ -25,6 +25,11 @@
 |															 |
 \*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\/////////////////////////////*/
 
+
+enum TILE {
+	GRASS,
+
+};
 
 
 
@@ -51,10 +56,10 @@ private:
 	template <typename T>
 	static void flush(std::unordered_map<std::string, std::shared_ptr<T>>& map);
 	//a dynamically allocated list of all called upon Textures.
-	static std::unordered_map<std::string, std::shared_ptr<sf::Texture>> textures_;
+	static std::unordered_map<std::string, std::shared_ptr<sf::Texture>> _textures;
 	//a dynamically allocated list of all called upon Sounds.
-	static std::unordered_map<std::string, std::shared_ptr<sf::Sound>> sounds_;
+	static std::unordered_map<std::string, std::shared_ptr<sf::Sound>> _sounds;
 	//a dynamically allocated list of all called upon Music.
-	static std::unordered_map<std::string, std::shared_ptr<sf::Music>> music_;
+	static std::unordered_map<std::string, std::shared_ptr<sf::Music>> _music;
 };
 

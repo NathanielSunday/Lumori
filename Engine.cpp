@@ -9,42 +9,43 @@ void Engine::run() {
 }
 
 State Engine::state() {
-	return state_;
+	return _state;
 }
 
 float Engine::deltaTime() {
-	return deltaTime_.getElapsedTime().asSeconds();
+	return _deltaTime.getElapsedTime().asSeconds();
 }
 
 void Engine::initEngine() {
-	state_ = State::INTRO;
+	_state = State::INTRO;
 	Level::init();
 
 }
 
 void Engine::initWindow() {
-	window_.create(sf::VideoMode(200, 200), "Lumori");
-	window_.setFramerateLimit(60);
+	_window.create(sf::VideoMode(200, 200), "Lumori");
+	_window.setFramerateLimit(60);
 }
 
 void Engine::mainLoop() {
 	sf::Event event;
 	sf::Sprite sprite;
 	sprite.setTexture(*Resource::get_texture(TILE_PATH "tilesheet.png"));
-	while (window_.isOpen()) {
-		deltaTime_.restart();
-		while (window_.pollEvent(event)) {
+	while (_window.isOpen()) {
+		_deltaTime.restart();
+		while (_window.pollEvent(event)) {
 			switch (event.type) {
 			case sf::Event::Closed:
-				window_.close();
+				_window.close();
 				break;
 			default:
 				break;
 			}
 		}
-		window_.clear();
-		window_.draw(sprite);
-		window_.display();
+		_window.clear();
+		_window.draw(sprite);
+		//_window.draw(Level::level());
+		_window.display();
 	}
 
 }

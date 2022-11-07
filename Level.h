@@ -9,16 +9,15 @@
 
 //static Level is a level manage for the proper level loading
 
-static class Level : public sf::Drawable {
+static class Level {
 public:
 	static void init();
 	//Load a level given the index
 	static void load(int level);
-
+	static sf::VertexArray level() { return _activeLevel; }
 private:
 	//character representation of rooms 
 	static std::vector<int**> _levels;
-	static sf::Texture** _activeLevel;
-	static sf::VertexArray va;
+	static sf::VertexArray _activeLevel;
 };
 
