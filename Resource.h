@@ -8,11 +8,12 @@
 #include <SFML/Audio/Music.hpp>
 
 #define TILE_SIZE		16
-#define NODE_SIZE		16
+#define NODE_SIZE		20
+#define TILEMAP_WIDTH	6
 #define ASSET_PATH		"Assets/"
-#define NODE_PATH		ASSET_PATH "level/"
-#define SPRITE_PATH		ASSET_PATH "sprite/entity/"
-#define TILE_PATH		ASSET_PATH "sprite/tile/"
+#define NODE_PATH		"level/"
+#define SPRITE_PATH		"sprite/entity/"
+#define TILE_PATH		"sprite/tile/"
 
 
 

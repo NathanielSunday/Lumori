@@ -50,6 +50,8 @@ private:
 	void initEngine();
 	//Window variables set
 	void initWindow();
+	//The main viewport (should probably be called when the player is loaded)
+	void initViewport();
 	//The main loop of the game
 	void mainLoop();
 	//cleanup the residuals before closing the game

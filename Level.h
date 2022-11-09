@@ -17,7 +17,7 @@ public:
 	static sf::VertexArray level() { return _activeLevel; }
 private:
 	//character representation of rooms 
-	static std::vector<int**> _levels;
+	static std::vector<std::vector<std::vector<int>>> _levels;
 	static sf::VertexArray _activeLevel;
 };
 

@@ -29,7 +29,7 @@
     <ClCompile Include="Level.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\Entities\player.png" />
+    <None Include="Assets\level.data" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -23,14 +23,19 @@ void Engine::initEngine() {
 }
 
 void Engine::initWindow() {
-	_window.create(sf::VideoMode(200, 200), "Lumori");
+	_window.create(sf::VideoMode(500, 500), "Lumori");
 	_window.setFramerateLimit(60);
+}
+
+void Engine::initViewport() {
+
 }
 
 void Engine::mainLoop() {
 	sf::Event event;
 	sf::Sprite sprite;
 	sprite.setTexture(*Resource::get_texture(TILE_PATH "tilesheet.png"));
+	Level::load(0);
 	while (_window.isOpen()) {
 		_deltaTime.restart();
 		while (_window.pollEvent(event)) {
@@ -43,8 +48,8 @@ void Engine::mainLoop() {
 			}
 		}
 		_window.clear();
-		_window.draw(sprite);
-		//_window.draw(Level::level());
+		//_window.draw(sprite);
+		_window.draw(Level::level(), &*Resource::get_texture(TILE_PATH "tilesheet.png"));
 		_window.display();
 	}
 
