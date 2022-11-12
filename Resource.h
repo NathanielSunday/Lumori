@@ -7,7 +7,9 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/Music.hpp>
 
+
 #define TILE_SIZE		16
+#define TEXTURE_SIZE	16
 #define NODE_SIZE		20
 #define TILEMAP_WIDTH	6
 #define ASSET_PATH		"Assets/"
@@ -51,7 +53,7 @@ public:
 	static void flush_sounds();
 	//destroy all loaded music
 	static void flush_music();
-	
+
 private:
 	//get a texture from a specified path
 	template <typename T>

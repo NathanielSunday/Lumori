@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Resource.h"
+#include "Console.h"
 #include <SFML\Graphics.hpp>
 #include <string>
 #include <fstream>

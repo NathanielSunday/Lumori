@@ -23,7 +23,7 @@ void Engine::initEngine() {
 }
 
 void Engine::initWindow() {
-	_window.create(sf::VideoMode(500, 500), "Lumori");
+	_window.create(sf::VideoMode(800, 800), "Lumori");
 	_window.setFramerateLimit(60);
 }
 
