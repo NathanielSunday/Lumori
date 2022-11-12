@@ -30,7 +30,7 @@ void Level::init() {
 		}
 		++b;
 	}
-	Console::WriteLine("All primitive levels have been loaded!");
+	Console::Info("All primitive levels have been loaded!");
 }
 
 void Level::load(int level) {
@@ -54,8 +54,7 @@ void Level::load(int level) {
 			for (int j = 0; j < NODE_SIZE; ++j) {
 				for (int i = 0; i < NODE_SIZE; ++i) {
 					int t = image.getPixel(i, j).r - 1;
-
-					if (t != -1)
+					if (t != -1) {
 						for (int v = 0; v < 4; ++v) {
 							//top left, top right, bottom right, bottom left
 
@@ -78,9 +77,10 @@ void Level::load(int level) {
 								((t / TILEMAP_WIDTH) + (v > 1 ? 1 : 0)) * TEXTURE_SIZE
 							);
 						}
+					}
 				}
 			}
 		}
 	}
-	Console::WriteLine("Level " + std::to_string(level) + " loaded onto VRAM.");
+	Console::Info("Level " + std::to_string(level) + " loaded onto VRAM.");
 }

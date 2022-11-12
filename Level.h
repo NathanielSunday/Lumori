@@ -5,7 +5,6 @@
 #include <SFML\Graphics.hpp>
 #include <string>
 #include <fstream>
-#include <iostream>
 #include <vector>
 
 //static Level is a level manage for the proper level loading
