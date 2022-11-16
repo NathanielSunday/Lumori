@@ -10,7 +10,7 @@
 
 #define TILE_SIZE		16
 #define TEXTURE_SIZE	16
-#define NODE_SIZE		20
+#define NODE_SIZE		16
 #define TILEMAP_WIDTH	6
 #define ASSET_PATH		"Assets/"
 #define NODE_PATH		"level/"

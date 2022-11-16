@@ -43,8 +43,8 @@ private:
 	//the main viewport of the game
 	sf::View _viewport;
 	//The clock used for calculating time between loops
-	sf::Clock _deltaTime;
-
+	sf::Clock _deltaClock;
+	sf::Time _deltaTime;
 	//Pre-window variables set
 	void initEngine();
 	//Window variables set

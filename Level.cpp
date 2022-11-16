@@ -41,13 +41,19 @@ void Level::load(int level) {
 	_activeLevel.resize(x * y * NODE_SIZE * NODE_SIZE * 4);
 	for (int b = 0; b < y; ++b) {
 		for (int a = 0; a < x; ++a) {
-
 			sf::Image image;
+
 			//check if the node exists
-			if (_levels[level][a][b] != -1)
-				image.loadFromFile(ASSET_PATH NODE_PATH "map" + std::to_string(_levels[level][a][b]) + ".bmp");
+			if (_levels[level][a][b] != -1) {
+				if (!image.loadFromFile(ASSET_PATH NODE_PATH "map" + std::to_string(_levels[level][a][b]) + ".png")) {
+					Console::Error("Failed to load level. The file \"map" + std::to_string(_levels[level][a][b]) + ".png\" is missing or corrupt.");
+					return;
+				}
+			}
 			else
 				image.create(NODE_SIZE, NODE_SIZE);
+
+
 
 
 			//initialize our actual verticies
@@ -68,19 +74,21 @@ void Level::load(int level) {
 							int c = 4 * (NODE_SIZE * (NODE_SIZE * ((b * x) + a) + j) + i) + v;
 
 							_activeLevel[c].position = sf::Vector2f(
-								((a * NODE_SIZE) + i + (v % 3 > 0 ? 1 : 0)) * TILE_SIZE,
-								((b * NODE_SIZE) + j + (v > 1 ? 1 : 0)) * TILE_SIZE
+								(((a * NODE_SIZE) + i + (v % 3 > 0 ? 1 : 0)) * TILE_SIZE) + 0.5f,
+								(((b * NODE_SIZE) + j + (v > 1 ? 1 : 0)) * TILE_SIZE) + 0.5f
 							);
 
 							_activeLevel[c].texCoords = sf::Vector2f(
-								((t % TILEMAP_WIDTH) + (v % 3 > 0 ? 1 : 0)) * TEXTURE_SIZE,
-								((t / TILEMAP_WIDTH) + (v > 1 ? 1 : 0)) * TEXTURE_SIZE
+								(((t % TILEMAP_WIDTH) + (v % 3 > 0 ? 1 : 0)) * TEXTURE_SIZE),
+								(((t / TILEMAP_WIDTH) + (v > 1 ? 1 : 0)) * TEXTURE_SIZE)
 							);
 						}
 					}
 				}
 			}
+			
 		}
 	}
 	Console::Info("Level " + std::to_string(level) + " loaded onto VRAM.");
 }
+
