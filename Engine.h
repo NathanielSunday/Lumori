@@ -27,35 +27,111 @@ enum State {
 	MAP,
 };
 
+enum Layer {
+	BACKGROUND,
+	MIDGROUND,
+	FOREGROUND,
+	INTERFACE,
+	//DO NOT DRAW TO THIS LAYER
+	FINAL,
+};
+
 class Engine {
 public:
-	//Execute the programe
+
+	/// <summary>
+	/// Executes the program
+	/// </summary>
 	void run();
-	//Get the current state of the game
+
+	/// <summary>
+	///
+	/// </summary>
+	/// <returns>Returns the current state of the game.</returns>
 	State state();
-	//Get the elapsed time between loops
+
+	/// <summary>
+	/// Get the elapsed time between game loops
+	/// </summary>
+	/// <returns>elapsed time as seconds</returns>
 	float deltaTime();
+
+	/// <summary>
+	/// Draws to a specific render layer
+	/// </summary>
+	/// <param name="layer">The layer in which to draw</param>
+	/// <param name="drawable">The object to draw</param>
+	/// <param name="states">The state in which to draw the object</param>
+	void drawToLayer(Layer layer, const sf::Drawable& drawable, const sf::RenderStates& states = sf::RenderStates::Default);
+
 private:
-	//the state the game is currently in
+	/// <summary>
+	/// The current state that the game is in
+	/// </summary>
 	State _state;
-	//the main window fo the game
+
+	/// <summary>
+	/// The main window of the game
+	/// </summary>
 	sf::RenderWindow _window;
-	//the main viewport of the game
+
+	/// <summary>
+	/// The main player's viewport
+	/// </summary>
 	sf::View _viewport;
-	//The clock used for calculating time between loops
+	
+	/// <summary>
+	///	The clock used for logical calculation (i.e. deltaTime)
+	/// </summary>
 	sf::Clock _deltaClock;
+	
+	/// <summary>
+	/// The time used in the deltaTime() function
+	/// </summary>
 	sf::Time _deltaTime;
-	//Pre-window variables set
+	
+	//perhaps instead make the background and hud a rendertexture in their specific classes, and everything else is an array of drawables and states in which to draw them
+
+	/// <summary>
+	/// The draw stack
+	/// </summary>
+	sf::RenderTexture* _drawStack;
+
+	/// <summary>
+	/// Pre-window variables and parameter setting
+	/// </summary>
 	void initEngine();
-	//Window variables set
+
+	/// <summary>
+	/// Initialize the window and subsidaries
+	/// </summary>
 	void initWindow();
-	//The main viewport (should probably be called when the player is loaded)
+
+	/// <summary>
+	/// Initialize the main viewport (use when loading the player or changing video settings)
+	/// </summary>
 	void initViewport();
-	//The main loop of the game
+
+	/// <summary>
+	/// The main game loop
+	/// </summary>
 	void mainLoop();
-	//cleanup the residuals before closing the game
+
+	/// <summary>
+	/// Finalizes the render texture from the draw stack before drawing it on the screen
+	/// </summary>
+	void render();
+
+	/// <summary>
+	/// Refresh the draw stack
+	/// </summary>
+	void refresh();
+
+	/// <summary>
+	/// Clean up residuals before program termination
+	/// </summary>
 	void cleanup();
 };
 
-//the main gameplay loop
+//the initial push :)
 int main();

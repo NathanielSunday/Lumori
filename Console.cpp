@@ -54,7 +54,22 @@ void Console::Error(std::string message) {
 }
 
 void Console::format(std::string &message) {
-	message = "\033[35m[" __DATE__ " | " __TIME__ "]\033[0m " + message;
+	time_t now = time(0);
+	tm ltm{};
+#if defined(_MSC_VER)
+	localtime_s(&ltm, &now);
+#elif defined(__unix__)
+	localtime_r(&now, &ltm);
+#else
+	static std::mutex mtx;
+	std::lock_guard<std::mutex> lock(mtx);
+	ltm = *std::localtime(&ltm);
+#endif
+	std::string fmt = "%F %T";
+	char buf[64];
+	std::string timestamp = {buf, std::strftime(buf, sizeof(buf), fmt.c_str(), &ltm)};
+
+	message = "\033[35m[" + timestamp + "]\033[0m " + message;
 }
 
 void Console::out(std::string &message, bool newLine) {

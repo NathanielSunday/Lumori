@@ -38,6 +38,8 @@ void Level::load(int level) {
 	int x = _levels[level].size();
 	int y = _levels[level][0].size();
 
+
+
 	_activeLevel.resize(x * y * NODE_SIZE * NODE_SIZE * 4);
 	for (int b = 0; b < y; ++b) {
 		for (int a = 0; a < x; ++a) {
@@ -74,8 +76,8 @@ void Level::load(int level) {
 							int c = 4 * (NODE_SIZE * (NODE_SIZE * ((b * x) + a) + j) + i) + v;
 
 							_activeLevel[c].position = sf::Vector2f(
-								(((a * NODE_SIZE) + i + (v % 3 > 0 ? 1 : 0)) * TILE_SIZE) + 0.5f,
-								(((b * NODE_SIZE) + j + (v > 1 ? 1 : 0)) * TILE_SIZE) + 0.5f
+								(((a * NODE_SIZE) + i + (v % 3 > 0 ? 1 : 0)) * TILE_SIZE),
+								(((b * NODE_SIZE) + j + (v > 1 ? 1 : 0)) * TILE_SIZE)
 							);
 
 							_activeLevel[c].texCoords = sf::Vector2f(

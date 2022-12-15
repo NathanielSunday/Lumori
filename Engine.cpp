@@ -18,9 +18,16 @@ float Engine::deltaTime() {
 	return _deltaTime.asSeconds();
 }
 
+void Engine::drawToLayer(Layer layer, const sf::Drawable& drawable, const sf::RenderStates& states) {
+	if (layer == Layer::FINAL) return Console::Error("Cannot write to layer 'FINAL'");
+	_drawStack[layer].draw(drawable, states);
+}
+
 void Engine::initEngine() {
 	_state = State::INTRO;
 	Level::init();
+	_drawStack = new sf::RenderTexture[Layer::FINAL + 1];
+	for (int i = 0; i <= Layer::FINAL; ++i) _drawStack[i].create(800, 700);
 }
 
 void Engine::initWindow() {
@@ -50,7 +57,7 @@ void Engine::initViewport() {
 
 	sf::FloatRect viewSize(center, ratio);
 	_viewport.setViewport(viewSize);
-	_window.setView(_viewport);
+	//_window.setView(_viewport);
 
 }
 
@@ -58,7 +65,7 @@ void Engine::mainLoop() {
 	sf::Event event;
 	sf::Sprite sprite;
 	sf::Keyboard keyboard;
-	sprite.setTexture(*Resource::get_texture(TILE_PATH "tilesheet.png"));
+	sprite.setTexture(*Resource::get_texture(SPRITE_PATH "player.png"));
 	Level::load(0);
 	while (_window.isOpen()) {
 		_deltaTime = _deltaClock.restart();
@@ -74,19 +81,48 @@ void Engine::mainLoop() {
 				break;
 			}
 		}
-		//should probably write to a render texture and draw that texture to window instead of directly to window
 
-		if (keyboard.isKeyPressed(sf::Keyboard::A))  _viewport.move(-10.0f * TILE_SIZE * deltaTime(), 0);
-		if (keyboard.isKeyPressed(sf::Keyboard::D)) _viewport.move(10.0f * TILE_SIZE * deltaTime(), 0);
-		if (keyboard.isKeyPressed(sf::Keyboard::W))    _viewport.move(0, -10.0f * TILE_SIZE * deltaTime());
-		if (keyboard.isKeyPressed(sf::Keyboard::S))  _viewport.move(0, 10.0f * TILE_SIZE * deltaTime());
+
+		sf::Vector2f speed;
+
+		if (keyboard.isKeyPressed(sf::Keyboard::A))	sprite.move(-5.0f * TILE_SIZE * deltaTime(), 0);
+		if (keyboard.isKeyPressed(sf::Keyboard::D)) sprite.move(5.0f * TILE_SIZE * deltaTime(), 0);
+		if (keyboard.isKeyPressed(sf::Keyboard::W))	sprite.move(0, -5.0f * TILE_SIZE * deltaTime());
+		if (keyboard.isKeyPressed(sf::Keyboard::S))	sprite.move(0, 5.0f * TILE_SIZE * deltaTime());
+		speed *= TILE_SIZE * deltaTime();
+
+		sprite.move(speed);
+
+		drawToLayer(Layer::BACKGROUND, Level::level(), &*Resource::get_texture(TILE_PATH "tilesheet.png"));
+		//drawToLayer(Layer::MIDGROUND, sprite);
+
+		
 		_window.clear();
+		render();
+		_viewport.setCenter(sprite.getPosition());
+		_window.draw(sprite);
 		_window.setView(_viewport);
-		//_window.draw(sprite);
-		_window.draw(Level::level(), &*Resource::get_texture(TILE_PATH "tilesheet.png"));
 		_window.display();
+		//why teh fuck does refreshing break it
+		//refresh();
 	}
 
+}
+
+void Engine::render() {
+	for (int i = 0; i < Layer::FINAL; ++i) {
+		_drawStack[i].display();
+		_drawStack[Layer::FINAL].draw(sf::Sprite(_drawStack[i].getTexture()));
+	}
+	_drawStack[Layer::FINAL].display();
+	_window.draw(sf::Sprite(_drawStack[Layer::FINAL].getTexture()));
+	refresh();
+}
+
+void Engine::refresh() {
+	for (int i = 0; i <= Layer::FINAL; ++i) {
+		_drawStack[i].clear(sf::Color::Transparent);
+	}
 }
 
 void Engine::cleanup() {

@@ -16,6 +16,8 @@ public:
 	static void load(int level);
 	static sf::VertexArray level() { return _activeLevel; }
 private:
+	//use this to draw to
+	sf::RenderTexture _texture;
 	//character representation of rooms 
 	static std::vector<std::vector<std::vector<int>>> _levels;
 	static sf::VertexArray _activeLevel;
