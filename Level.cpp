@@ -88,7 +88,6 @@ void Level::load(int level) {
 					}
 				}
 			}
-			
 		}
 	}
 	Console::Info("Level " + std::to_string(level) + " loaded onto VRAM.");

@@ -30,8 +30,10 @@
 
 
 enum TILE {
-	GRASS,
-
+	GRASS,			//tile 00
+	SAND,			//tile 01
+	WATER_SHALLOW,	//tile 02
+	WATER_DEEP,		//tile 03
 };
 
 
