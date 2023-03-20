@@ -1,5 +1,9 @@
 #include "Engine.h"
-
+#include "Console.h"
+#include "Resource.h"
+#include "Level.h"
+#include <stdexcept>
+#include <memory>
 
 void Engine::run() {
 	initEngine();
@@ -18,21 +22,23 @@ float Engine::deltaTime() {
 	return _deltaTime.asSeconds();
 }
 
-void Engine::drawToLayer(Layer layer, const sf::Drawable& drawable, const sf::RenderStates& states) {
+void Engine::drawToLayer(const sf::Drawable& drawable, Layer layer, const sf::RenderStates& states) {
 	if (layer == Layer::FINAL) return Console::Error("Cannot write to layer 'FINAL'");
 	_drawStack[layer].draw(drawable, states);
 }
 
 void Engine::initEngine() {
 	_state = State::INTRO;
-	Level::init();
+	Level::Initialize();
 	_drawStack = new sf::RenderTexture[Layer::FINAL + 1];
 	for (int i = 0; i <= Layer::FINAL; ++i) _drawStack[i].create(800, 700);
 }
 
 void Engine::initWindow() {
 	//, sf::Style::Titlebar | sf::Style::Close
-	_window.create(sf::VideoMode(800, 700), "Lumori");
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 0;
+	_window.create(sf::VideoMode(800, 700), "Lumori", sf::Style::Default, settings);
 	_window.setFramerateLimit(60);
 	_window.setVerticalSyncEnabled(true);
 }
@@ -65,8 +71,8 @@ void Engine::mainLoop() {
 	sf::Event event;
 	sf::Sprite sprite;
 	sf::Keyboard keyboard;
-	sprite.setTexture(*Resource::get_texture(SPRITE_PATH "player.png"));
-	Level::load(0);
+	sprite.setTexture(*Resource::GetTexture(SPRITE_PATH "player.png"));
+	Level::Load(0);
 	while (_window.isOpen()) {
 		_deltaTime = _deltaClock.restart();
 		while (_window.pollEvent(event)) {
@@ -93,18 +99,18 @@ void Engine::mainLoop() {
 
 		sprite.move(speed);
 
-		drawToLayer(Layer::BACKGROUND, Level::level(), &*Resource::get_texture(TILE_PATH "tilesheet.png"));
-		//drawToLayer(Layer::MIDGROUND, sprite);
+		drawToLayer(Level::Get(), Layer::BACKGROUND, &*Resource::GetTexture(TILE_PATH "tilesheet.png"));
+		//drawToLayer(sprite, Layer::ENTITY);
 
 		
 		_window.clear();
 		render();
 		_viewport.setCenter(sprite.getPosition());
+		//current player entity is going to have to be drawn to the window, however this removes foreground capabilities, 
+		//further testing required, may have to draw layers individually instead of pushing to final
 		_window.draw(sprite);
 		_window.setView(_viewport);
 		_window.display();
-		//why teh fuck does refreshing break it
-		//refresh();
 	}
 
 }
@@ -126,7 +132,7 @@ void Engine::refresh() {
 }
 
 void Engine::cleanup() {
-	Resource::flush_all();
+	Resource::FlushAll();
 }
 
 int main() {

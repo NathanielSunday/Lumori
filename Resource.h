@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <unordered_map>
 #include <memory>
 #include <SFML/Graphics/Texture.hpp>
@@ -42,24 +41,24 @@ enum TILE {
 static class Resource {
 public:
 	//get a texture from a specified path
-	static std::shared_ptr<sf::Texture> get_texture(const std::string& file);
+	static std::shared_ptr<sf::Texture> GetTexture(const std::string& file);
 	//get a sound from a specified path
-	static std::shared_ptr<sf::Sound> get_sound(const std::string& file);
+	static std::shared_ptr<sf::Sound> GetSound(const std::string& file);
 	//get music from a specified path
-	static std::shared_ptr<sf::Music> get_music(const std::string& file);
+	static std::shared_ptr<sf::Music> GetMusic(const std::string& file);
 	//destroy all loaded assets
-	static void flush_all();
+	static void FlushAll();
 	//destroy all loaded textures
-	static void flush_textures();
+	static void FlushTextures();
 	//destroy all loaded sounds
-	static void flush_sounds();
+	static void FlushSounds();
 	//destroy all loaded music
-	static void flush_music();
+	static void FlushMusic();
 
 private:
 	//get a texture from a specified path
 	template <typename T>
-	static void flush(std::unordered_map<std::string, std::shared_ptr<T>>& map);
+	static void Flush(std::unordered_map<std::string, std::shared_ptr<T>>& map);
 	//a dynamically allocated list of all called upon Textures.
 	static std::unordered_map<std::string, std::shared_ptr<sf::Texture>> _textures;
 	//a dynamically allocated list of all called upon Sounds.

@@ -1,9 +1,12 @@
 #include "Level.h"
+#include "Resource.h"
+#include "Console.h"
+#include <fstream>
 
 std::vector<std::vector<std::vector<int>>> Level::_levels;
 sf::VertexArray Level::_activeLevel;
 
-void Level::init() {
+void Level::Initialize() {
 	_activeLevel.setPrimitiveType(sf::Quads);
 	//input for level data file, may move this to Resource manager at some point
 	std::ifstream filein(ASSET_PATH "level.data");
@@ -33,7 +36,7 @@ void Level::init() {
 	Console::Info("All primitive levels have been loaded!");
 }
 
-void Level::load(int level) {
+void Level::Load(int level) {
 	//get the length of the array(s)
 	int x = _levels[level].size();
 	int y = _levels[level][0].size();

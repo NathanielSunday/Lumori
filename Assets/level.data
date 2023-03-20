@@ -1,8 +1,8 @@
-#Overworld, level 0
+#0, may be using this what what nodes can be generated per floor, or may be removing altogether
 !2,2
 0,1
 -1,-1
-#Test Room, level 1
+#1 
 !1,2
 1
 0

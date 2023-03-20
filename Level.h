@@ -1,20 +1,15 @@
 #pragma once
 
-#include "Resource.h"
-#include "Console.h"
 #include <SFML\Graphics.hpp>
-#include <string>
-#include <fstream>
-#include <vector>
 
 //static Level is a level manage for the proper level loading
 
 static class Level {
 public:
-	static void init();
+	static void Initialize();
 	//Load a level given the index
-	static void load(int level);
-	static sf::VertexArray level() { return _activeLevel; }
+	static void Load(int level);
+	static sf::VertexArray Get() { return _activeLevel; }
 private:
 	//use this to draw to
 	sf::RenderTexture _texture;

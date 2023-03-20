@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Resource.h"
-#include "Level.h"
+
 #include <SFML/Graphics.hpp>
-#include <stdexcept>
-#include <memory>
+
 
 
 
@@ -29,7 +27,7 @@ enum State {
 
 enum Layer {
 	BACKGROUND,
-	MIDGROUND,
+	ENTITY,
 	FOREGROUND,
 	INTERFACE,
 	//DO NOT DRAW TO THIS LAYER
@@ -62,7 +60,7 @@ public:
 	/// <param name="layer">The layer in which to draw</param>
 	/// <param name="drawable">The object to draw</param>
 	/// <param name="states">The state in which to draw the object</param>
-	void drawToLayer(Layer layer, const sf::Drawable& drawable, const sf::RenderStates& states = sf::RenderStates::Default);
+	void drawToLayer(const sf::Drawable& drawable, Layer layer = Layer::ENTITY, const sf::RenderStates& states = sf::RenderStates::Default);
 
 private:
 	/// <summary>

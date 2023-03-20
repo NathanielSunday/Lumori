@@ -1,5 +1,5 @@
 #include "Console.h"
-
+#include <iostream>
 
 void Console::WriteLine(std::string message, ConsoleType type, bool newLine, bool isFormat) {	
 	//Cool useful embedded macros

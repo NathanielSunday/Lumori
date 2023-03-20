@@ -9,7 +9,7 @@ std::unordered_map<std::string, std::shared_ptr<sf::Sound>> Resource::_sounds;
 std::unordered_map<std::string, std::shared_ptr<sf::Music>> Resource::_music;
 
 
-std::shared_ptr<sf::Texture> Resource::get_texture(const std::string& file) {
+std::shared_ptr<sf::Texture> Resource::GetTexture(const std::string& file) {
 	const auto i = _textures.find(file);
 
 	if (i != _textures.end()) {
@@ -23,7 +23,7 @@ std::shared_ptr<sf::Texture> Resource::get_texture(const std::string& file) {
 	}
 }
 
-std::shared_ptr<sf::Sound> Resource::get_sound(const std::string& file) {
+std::shared_ptr<sf::Sound> Resource::GetSound(const std::string& file) {
 	const auto i = _sounds.find(file);
 
 	if (i != _sounds.end()) {
@@ -37,7 +37,7 @@ std::shared_ptr<sf::Sound> Resource::get_sound(const std::string& file) {
 	}
 }
 
-std::shared_ptr<sf::Music> Resource::get_music(const std::string& file) {
+std::shared_ptr<sf::Music> Resource::GetMusic(const std::string& file) {
 	const auto i = _music.find(file);
 
 	if (i != _music.end()) {
@@ -51,19 +51,19 @@ std::shared_ptr<sf::Music> Resource::get_music(const std::string& file) {
 	}
 }
 
-void Resource::flush_all() {
-	flush_textures();
-	flush_sounds();
-	flush_music();
+void Resource::FlushAll() {
+	FlushTextures();
+	FlushSounds();
+	FlushMusic();
 }
 
-void Resource::flush_textures() { flush(_textures); }
-void Resource::flush_sounds() { flush(_sounds); }
-void Resource::flush_music() { flush(_music); }
+void Resource::FlushTextures() { Flush(_textures); }
+void Resource::FlushSounds() { Flush(_sounds); }
+void Resource::FlushMusic() { Flush(_music); }
 
 //get a texture from a specified path
 template <typename T>
-void Resource::flush(std::unordered_map<std::string, std::shared_ptr<T>>& map) {
+void Resource::Flush(std::unordered_map<std::string, std::shared_ptr<T>>& map) {
 	for (auto m : map) { m.second.reset(); }
 	map.clear();
 }
