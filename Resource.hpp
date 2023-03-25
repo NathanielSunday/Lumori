@@ -60,10 +60,10 @@ private:
 	template <typename T>
 	static void Flush(std::unordered_map<std::string, std::shared_ptr<T>>& map);
 	//a dynamically allocated list of all called upon Textures.
-	static std::unordered_map<std::string, std::shared_ptr<sf::Texture>> _textures;
+	static std::unordered_map<std::string, std::shared_ptr<sf::Texture>> m_textures;
 	//a dynamically allocated list of all called upon Sounds.
-	static std::unordered_map<std::string, std::shared_ptr<sf::Sound>> _sounds;
+	static std::unordered_map<std::string, std::shared_ptr<sf::Sound>> m_sounds;
 	//a dynamically allocated list of all called upon Music.
-	static std::unordered_map<std::string, std::shared_ptr<sf::Music>> _music;
+	static std::unordered_map<std::string, std::shared_ptr<sf::Music>> m_music;
 };
 

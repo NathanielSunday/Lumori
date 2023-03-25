@@ -1,13 +1,13 @@
-#include "Level.h"
-#include "Resource.h"
-#include "Console.h"
+#include "Level.hpp"
+#include "Resource.hpp"
+#include "Console.hpp"
 #include <fstream>
 
-std::vector<std::vector<std::vector<int>>> Level::_levels;
-sf::VertexArray Level::_activeLevel;
+std::vector<std::vector<std::vector<int>>> Level::m_levels;
+sf::VertexArray Level::m_activeLevel;
 
 void Level::Initialize() {
-	_activeLevel.setPrimitiveType(sf::Quads);
+	m_activeLevel.setPrimitiveType(sf::Quads);
 	//input for level data file, may move this to Resource manager at some point
 	std::ifstream filein(ASSET_PATH "level.data");
 	int level = -1, a, b, x, y;
@@ -22,13 +22,13 @@ void Level::Initialize() {
 			line.erase(0, line.find(',') + 1);
 			y = std::stoi(line.substr(0, line.find(',')));
 
-			_levels.push_back(std::vector<std::vector<int>>(x, std::vector<int>(y, 0)));
+			m_levels.push_back(std::vector<std::vector<int>>(x, std::vector<int>(y, 0)));
 
 			continue;
 		}
 
 		for (a = 0; a < x; ++a) {
-			_levels[level][a][b] = std::stoi(line.substr(0, line.find(',')));
+			m_levels[level][a][b] = std::stoi(line.substr(0, line.find(',')));
 			line.erase(0, line.find(',') + 1);
 		}
 		++b;
@@ -38,20 +38,20 @@ void Level::Initialize() {
 
 void Level::Load(int level) {
 	//get the length of the array(s)
-	int x = _levels[level].size();
-	int y = _levels[level][0].size();
+	int x = m_levels[level].size();
+	int y = m_levels[level][0].size();
 
 
 
-	_activeLevel.resize(x * y * NODE_SIZE * NODE_SIZE * 4);
+	m_activeLevel.resize(x * y * NODE_SIZE * NODE_SIZE * 4);
 	for (int b = 0; b < y; ++b) {
 		for (int a = 0; a < x; ++a) {
 			sf::Image image;
 
 			//check if the node exists
-			if (_levels[level][a][b] != -1) {
-				if (!image.loadFromFile(ASSET_PATH NODE_PATH "map" + std::to_string(_levels[level][a][b]) + ".png")) {
-					Console::Error("Failed to load level. The file \"map" + std::to_string(_levels[level][a][b]) + ".png\" is missing or corrupt.");
+			if (m_levels[level][a][b] != -1) {
+				if (!image.loadFromFile(ASSET_PATH NODE_PATH "map" + std::to_string(m_levels[level][a][b]) + ".png")) {
+					Console::Error("Failed to load level. The file \"map" + std::to_string(m_levels[level][a][b]) + ".png\" is missing or corrupt.");
 					return;
 				}
 			}
@@ -78,12 +78,12 @@ void Level::Load(int level) {
 
 							int c = 4 * (NODE_SIZE * (NODE_SIZE * ((b * x) + a) + j) + i) + v;
 
-							_activeLevel[c].position = sf::Vector2f(
+							m_activeLevel[c].position = sf::Vector2f(
 								(((a * NODE_SIZE) + i + (v % 3 > 0 ? 1 : 0)) * TILE_SIZE),
 								(((b * NODE_SIZE) + j + (v > 1 ? 1 : 0)) * TILE_SIZE)
 							);
 
-							_activeLevel[c].texCoords = sf::Vector2f(
+							m_activeLevel[c].texCoords = sf::Vector2f(
 								(((t % TILEMAP_WIDTH) + (v % 3 > 0 ? 1 : 0)) * TEXTURE_SIZE),
 								(((t / TILEMAP_WIDTH) + (v > 1 ? 1 : 0)) * TEXTURE_SIZE)
 							);

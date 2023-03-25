@@ -1,4 +1,4 @@
-#include "Console.h"
+#include "Console.hpp"
 #include <iostream>
 
 void Console::WriteLine(std::string message, ConsoleType type, bool newLine, bool isFormat) {	

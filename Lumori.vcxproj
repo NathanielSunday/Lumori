@@ -19,11 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Collidable.h" />
-    <ClInclude Include="Console.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="Level.h" />
+    <ClInclude Include="Collidable.hpp" />
+    <ClInclude Include="Console.hpp" />
+    <ClInclude Include="Engine.hpp" />
+    <ClInclude Include="Resource.hpp" />
+    <ClInclude Include="Level.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Collidable.cpp" />

@@ -9,12 +9,12 @@ public:
 	static void Initialize();
 	//Load a level given the index
 	static void Load(int level);
-	static sf::VertexArray Get() { return _activeLevel; }
+	static sf::VertexArray Get() { return m_activeLevel; }
 private:
 	//use this to draw to
-	sf::RenderTexture _texture;
+	sf::RenderTexture m_texture;
 	//character representation of rooms 
-	static std::vector<std::vector<std::vector<int>>> _levels;
-	static sf::VertexArray _activeLevel;
+	static std::vector<std::vector<std::vector<int>>> m_levels;
+	static sf::VertexArray m_activeLevel;
 };
 

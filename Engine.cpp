@@ -1,9 +1,9 @@
-#include "Engine.h"
-#include "Console.h"
-#include "Resource.h"
-#include "Level.h"
+#include "Engine.hpp"
+#include "Console.hpp"
+#include "Resource.hpp"
+#include "Level.hpp"
 #include <stdexcept>
-#include <memory>
+//#include <memory>
 
 void Engine::run() {
 	initEngine();
@@ -15,39 +15,44 @@ void Engine::run() {
 }
 
 State Engine::state() {
-	return _state;
+	return m_state;
 }
 
 float Engine::deltaTime() {
-	return _deltaTime.asSeconds();
+	return m_deltaTime.asSeconds();
 }
 
 void Engine::drawToLayer(const sf::Drawable& drawable, Layer layer, const sf::RenderStates& states) {
 	if (layer == Layer::FINAL) return Console::Error("Cannot write to layer 'FINAL'");
-	_drawStack[layer].draw(drawable, states);
+	if (layer == Layer::ENTITY) return Console::Error("Cannot write to layer 'ENTITY' using 'drawToLayer', use 'addCollidable' instead");
+	m_drawStack[layer].draw(drawable, states);
+}
+
+void Engine::addCollidable(Collidable& collidable) {
+	m_collidableStack.push_back(&collidable);
 }
 
 void Engine::initEngine() {
-	_state = State::INTRO;
+	m_state = State::INTRO;
 	Level::Initialize();
-	_drawStack = new sf::RenderTexture[Layer::FINAL + 1];
-	for (int i = 0; i <= Layer::FINAL; ++i) _drawStack[i].create(800, 700);
+	m_drawStack = new sf::RenderTexture[Layer::FINAL + 1];
+	for (int i = 0; i <= Layer::FINAL; ++i) m_drawStack[i].create(800, 700);
 }
 
 void Engine::initWindow() {
 	//, sf::Style::Titlebar | sf::Style::Close
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 0;
-	_window.create(sf::VideoMode(800, 700), "Lumori", sf::Style::Default, settings);
-	_window.setFramerateLimit(60);
-	_window.setVerticalSyncEnabled(true);
+	m_window.create(sf::VideoMode(800, 700), "Lumori", sf::Style::Default, settings);
+	m_window.setFramerateLimit(60);
+	m_window.setVerticalSyncEnabled(true);
 }
 
 void Engine::initViewport() {
-	_viewport.reset(sf::FloatRect(sf::Vector2f(0, 0), sf::Vector2f(TILE_SIZE * 16, TILE_SIZE * 14)));
+	m_viewport.reset(sf::FloatRect(sf::Vector2f(0, 0), sf::Vector2f(TILE_SIZE * 16, TILE_SIZE * 14)));
 
 
-	sf::Vector2u window = _window.getSize();
+	sf::Vector2u window = m_window.getSize();
 	//1x wide if taller window, 1x tall if wider window
 	sf::Vector2f ratio(
 		(window.y / 7.0f) >= (window.x / 8.0f) ? 1.0f : (window.y / 7.0f) / (window.x / 8.0f),
@@ -62,23 +67,24 @@ void Engine::initViewport() {
 	Console::Debug("Corner Pos: " + std::to_string(center.x) + ", " + std::to_string(center.y));
 
 	sf::FloatRect viewSize(center, ratio);
-	_viewport.setViewport(viewSize);
+	m_viewport.setViewport(viewSize);
 	//_window.setView(_viewport);
 
 }
 
 void Engine::mainLoop() {
 	sf::Event event;
-	sf::Sprite sprite;
 	sf::Keyboard keyboard;
-	sprite.setTexture(*Resource::GetTexture(SPRITE_PATH "player.png"));
+	Collidable player(SPRITE_PATH "player.png", sf::Vector2f(0, 0) * 16.0f, sf::Vector2f(0.5, 0.5) * 16.0f, sf::Vector2f(0.25, 0.5) * 16.0f);
+	Collidable playernt(SPRITE_PATH "player.png", sf::Vector2f(5, 5) * 16.0f, sf::Vector2f(0.5, 0.5) * 16.0f, sf::Vector2f(0.25, 0.5) * 16.0f, true);
+	Collidable immovable(SPRITE_PATH "player.png", sf::Vector2f(10, 5) * 16.0f, sf::Vector2f(0.5, 0.5) * 16.0f, sf::Vector2f(0.25, 0.5) * 16.0f, true, true);
+	Collidable::SetDisplayColliders();
 	Level::Load(0);
-	while (_window.isOpen()) {
-		_deltaTime = _deltaClock.restart();
-		while (_window.pollEvent(event)) {
+	while (m_window.isOpen()) {
+		while (m_window.pollEvent(event)) {
 			switch (event.type) {
 			case sf::Event::Closed:
-				_window.close();
+				m_window.close();
 				break;
 			case sf::Event::Resized:
 				initViewport();
@@ -87,48 +93,66 @@ void Engine::mainLoop() {
 				break;
 			}
 		}
+		//LOGIC
+		update();
 
 
-		sf::Vector2f speed;
+		sf::Vector2f speed(0, 0);
 
-		if (keyboard.isKeyPressed(sf::Keyboard::A))	sprite.move(-5.0f * TILE_SIZE * deltaTime(), 0);
-		if (keyboard.isKeyPressed(sf::Keyboard::D)) sprite.move(5.0f * TILE_SIZE * deltaTime(), 0);
-		if (keyboard.isKeyPressed(sf::Keyboard::W))	sprite.move(0, -5.0f * TILE_SIZE * deltaTime());
-		if (keyboard.isKeyPressed(sf::Keyboard::S))	sprite.move(0, 5.0f * TILE_SIZE * deltaTime());
-		speed *= TILE_SIZE * deltaTime();
+		if (keyboard.isKeyPressed(sf::Keyboard::A))	speed.x += -1.0f;
+		if (keyboard.isKeyPressed(sf::Keyboard::D)) speed.x += 1.0f;
+		if (keyboard.isKeyPressed(sf::Keyboard::W))	speed.y += -1.0f;
+		if (keyboard.isKeyPressed(sf::Keyboard::S))	speed.y += 1.0f;
+		if (speed.x != 0 || speed.y != 0) {
+			speed /= sqrt(speed.x * speed.x + speed.y * speed.y);
+			speed *= TILE_SIZE * deltaTime() * 5.0f;
+			player.move(speed);
 
-		sprite.move(speed);
+		}
 
+		//GRAPHIC
 		drawToLayer(Level::Get(), Layer::BACKGROUND, &*Resource::GetTexture(TILE_PATH "tilesheet.png"));
-		//drawToLayer(sprite, Layer::ENTITY);
+		addCollidable(player);
+		addCollidable(playernt);
+		addCollidable(immovable);
 
-		
-		_window.clear();
+		m_window.clear();
 		render();
-		_viewport.setCenter(sprite.getPosition());
-		//current player entity is going to have to be drawn to the window, however this removes foreground capabilities, 
-		//further testing required, may have to draw layers individually instead of pushing to final
-		_window.draw(sprite);
-		_window.setView(_viewport);
-		_window.display();
+		m_viewport.setCenter(player.getPosition());
+		m_window.setView(m_viewport);
+		m_window.display();
 	}
+}
 
+void Engine::update() {
+	m_deltaTime = m_deltaClock.restart();
+	Collidable::CheckGlobalCollision();
+	Console::Info(std::to_string(1 / deltaTime()));
 }
 
 void Engine::render() {
+
 	for (int i = 0; i < Layer::FINAL; ++i) {
-		_drawStack[i].display();
-		_drawStack[Layer::FINAL].draw(sf::Sprite(_drawStack[i].getTexture()));
+		if (i == Layer::ENTITY) {
+			//sf::Vector2f pos = m_collidableStack.at(0)->getPosition();
+			std::sort(m_collidableStack.begin(), m_collidableStack.end(), Collidable::zIndex);
+			for (int j = 0; j < m_collidableStack.size(); ++j) m_window.draw(*m_collidableStack.at(j));
+			continue;
+		}
+		m_drawStack[i].display();
+		m_window.draw(sf::Sprite(m_drawStack[i].getTexture()));
+		//_drawStack[Layer::FINAL].draw(sf::Sprite(_drawStack[i].getTexture()));
 	}
-	_drawStack[Layer::FINAL].display();
-	_window.draw(sf::Sprite(_drawStack[Layer::FINAL].getTexture()));
+	//_drawStack[Layer::FINAL].display();
+	m_window.draw(sf::Sprite(m_drawStack[Layer::FINAL].getTexture()));
 	refresh();
 }
 
 void Engine::refresh() {
 	for (int i = 0; i <= Layer::FINAL; ++i) {
-		_drawStack[i].clear(sf::Color::Transparent);
+		m_drawStack[i].clear(sf::Color::Transparent);
 	}
+	m_collidableStack.clear();
 }
 
 void Engine::cleanup() {

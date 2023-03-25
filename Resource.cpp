@@ -1,52 +1,49 @@
-#include "Resource.h"
+#include "Resource.hpp"
+#include "Console.hpp"
 
 
 //a dynamically allocated list of all called upon Textures.
-std::unordered_map<std::string, std::shared_ptr<sf::Texture>> Resource::_textures;
+std::unordered_map<std::string, std::shared_ptr<sf::Texture>> Resource::m_textures;
 //a dynamically allocated list of all called upon Sounds.
-std::unordered_map<std::string, std::shared_ptr<sf::Sound>> Resource::_sounds;
+std::unordered_map<std::string, std::shared_ptr<sf::Sound>> Resource::m_sounds;
 //a dynamically allocated list of all called upon Music.
-std::unordered_map<std::string, std::shared_ptr<sf::Music>> Resource::_music;
+std::unordered_map<std::string, std::shared_ptr<sf::Music>> Resource::m_music;
 
 
 std::shared_ptr<sf::Texture> Resource::GetTexture(const std::string& file) {
-	const auto i = _textures.find(file);
+	const auto i = m_textures.find(file);
 
-	if (i != _textures.end()) {
-		return i->second;
-	}
+	if (i != m_textures.end()) return i->second;
 	else {
 		auto t = std::make_shared<sf::Texture>();
-		t->loadFromFile(ASSET_PATH + file);
-		_textures.insert({ file, t });
+		if (t->loadFromFile(ASSET_PATH + file)) m_textures.insert({ file, t });
+		else Console::Error("Could not load texture at '" + file + "'");
 		return t;
 	}
 }
 
 std::shared_ptr<sf::Sound> Resource::GetSound(const std::string& file) {
-	const auto i = _sounds.find(file);
+	const auto i = m_sounds.find(file);
 
-	if (i != _sounds.end()) {
+	if (i != m_sounds.end()) {
 		return i->second;
 	}
 	else {
 		auto t = std::make_shared<sf::Sound>();
 		//t->;
-		_sounds.insert({ file, t });
+		m_sounds.insert({ file, t });
 		return t;
 	}
 }
 
 std::shared_ptr<sf::Music> Resource::GetMusic(const std::string& file) {
-	const auto i = _music.find(file);
+	const auto i = m_music.find(file);
 
-	if (i != _music.end()) {
-		return i->second;
-	}
+	if (i != m_music.end()) return i->second;
 	else {
 		auto t = std::make_shared<sf::Music>();
-		t->openFromFile(ASSET_PATH + file);
-		_music.insert({ file, t });
+		if (t->openFromFile(ASSET_PATH + file)) m_music.insert({ file, t });
+		else Console::Error("Could not load music at '" + file + "'");
 		return t;
 	}
 }
@@ -57,11 +54,10 @@ void Resource::FlushAll() {
 	FlushMusic();
 }
 
-void Resource::FlushTextures() { Flush(_textures); }
-void Resource::FlushSounds() { Flush(_sounds); }
-void Resource::FlushMusic() { Flush(_music); }
+void Resource::FlushTextures() { Flush(m_textures); }
+void Resource::FlushSounds() { Flush(m_sounds); }
+void Resource::FlushMusic() { Flush(m_music); }
 
-//get a texture from a specified path
 template <typename T>
 void Resource::Flush(std::unordered_map<std::string, std::shared_ptr<T>>& map) {
 	for (auto m : map) { m.second.reset(); }
