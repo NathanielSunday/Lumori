@@ -127,7 +127,7 @@ void Engine::mainLoop() {
 void Engine::update() {
 	m_deltaTime = m_deltaClock.restart();
 	Collidable::CheckGlobalCollision();
-	Console::Info(std::to_string(1 / deltaTime()));
+	//Console::Info(std::to_string(1 / deltaTime()));
 }
 
 void Engine::render() {
